@@ -1,6 +1,6 @@
 'use strict';
 
-var config = require('../../config');
+var config = require('../config');
 var winston = require('winston');
 var _ = require('lodash');
 var Promise = require('bluebird');
@@ -10,14 +10,14 @@ var path = require('path');
 var es = require('elasticsearch');
 
 // -- TMP
-var User = require('../../models/user/user.model');
+var User = require('../models/user/user.model');
 
 // --- New Elastic Client
 var esClient = new es.Client({host: config.get('elastic').host});
 
 // --- Get Models
 function getModels() {
-  return glob(path.join(__dirname, '../../models/**/*.model.js'))
+  return glob(path.join(__dirname, '../models/**/*.model.js'))
     .map(function(filename) {
       return require(filename);
     }
@@ -50,6 +50,7 @@ function createIndexIfNotExists() {
 
 // --- ES Init
 module.exports = function esInit() {
+
   return Promise.join(getModels(), createIndexIfNotExists(), _.identity)
     .map(function(Type) {
       return Type.createOrUpdateMapping()

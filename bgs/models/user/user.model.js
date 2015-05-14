@@ -39,7 +39,7 @@ User.getByUsername = function(username) {
       if (result.elements.length === 0)
         throw new NoUserFoundError('No user found');
       else if (result.elements.length > 1)
-        throw new DuplgetByUsernameicateUserError('2 users with the same name, omfg !!!');
+        throw new DuplicateUserError('2 users with the same name, omfg !!!');
       return result.elements[0];
     })
   ;
@@ -49,11 +49,8 @@ User.getByUsername = function(username) {
 User.getFromAuth = function(username, password) {
   return User.getByUsername(username)
     .then(function(result){
-      console.log("before", result);
-      if (bcrypt.compareSync(password, result.password)) {
-        console.log("after", result);
+      if (bcrypt.compareSync(password, result.password))
         return result;
-      }
       throw new NoUserFoundError('No user found');
     })
   ;

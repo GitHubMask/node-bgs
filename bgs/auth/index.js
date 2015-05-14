@@ -22,7 +22,6 @@ router.post('/auth', function(req, res) {
     .catch(function(err) {
       this.status = 401;
       this.data = {error: 'Bad credentials'};
-      winston.error(err);
     })
     .then(function(user){
       if (user) {
