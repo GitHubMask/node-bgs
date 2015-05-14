@@ -3,7 +3,7 @@ var nodemon = require('gulp-nodemon');
 
 gulp.task('serve_dev', function () {
   nodemon({
-    script: 'server/server.js'
+    script: 'bgs/bgs.js'
   , ext: 'js'
   , env: { 'NODE_ENV': 'development', 'INIT_TEST_DATA': 'true'}
   })
