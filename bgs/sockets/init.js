@@ -1,6 +1,8 @@
 'use strict';
 
-var slib = require('./socketLib');
+var mw = require('./middlewares');
+var userSockets = require('./users');
+var gameSockets = require('./games');
 
 module.exports = function(server) {
 
@@ -9,26 +11,19 @@ module.exports = function(server) {
   io.of('/main')
 
   // -- Authorize
-  .use(slib.authorize)
+  .use(mw.authorize)
 
   // -- Propagate data
-  .use(slib.augment)
+  .use(mw.augment)
 
   // -- Main sockets
   .on('connection', function (socket) {
 
-    // -- Send the new user to everyone else
-    socket.broadcast.emit('userJoined', slib.getUser(socket));
+    // User related sockets
+    userSockets(socket);
 
-    // -- Currently connected users
-    socket.on('getUsers', function(){
-      socket.emit('hereAreTheUsers', slib.getUsers(socket));
-    });
-
-    socket.on('disconnect', function(){
-      // -- Notify everyone that this user left
-      socket.broadcast.emit('userLeft', slib.getUser(socket));
-    });
+    // Game related sockets
+    gameSockets(socket);
 
   });
 

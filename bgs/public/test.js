@@ -4,13 +4,25 @@ function doStuff(token) {
   socket = io('http://192.168.56.101:3000/main', {query: 'token='+token});
   if (socket) {
     document.getElementById('connected').innerHTML = 'CONNECTED !!!';
+
+    socket.emit('getUsers');
     socket.on('hereAreTheUsers', function(data){
-      var list = '<ul>';
+      var list = '<ul id="users-ul">';
       for(var i=0;i<data.users.length;i++) {
-        list += '<li>'+data.users[i].username+'</li>';
+        list += '<li id="user-'+data.users[i].id+'">'+data.users[i].username+'</li>';
       }
       list += '</ul>';
       document.getElementById('user-list').innerHTML = list;
+    });
+
+    socket.on('userJoined', function(data){
+      console.log(data);
+      var html = '<li id="user-'+data.user.id+'">'+data.user.username+'</li>';
+      document.getElementById('users-ul').innerHTML += html;
+    });
+
+    socket.on('userLeft', function(data){
+      document.getElementById('user-'+data.user.id).remove();
     });
   }
 }
