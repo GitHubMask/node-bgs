@@ -32,9 +32,19 @@ module.exports = (function(){
     return jwt.verify(token, secret, options);
   }
 
+  function getPayload(token) {
+    return jwt.decode(token);
+  }
+
+  function getHeader(token) {
+    return jwt.decode(token, {complete: true}).header;
+  }
+
   return {
     generate: generate,
     validate: validate,
+    getPayload: getPayload,
+    getHeader: getHeader,
   }
 
 })();

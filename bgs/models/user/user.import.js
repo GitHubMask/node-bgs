@@ -1,14 +1,16 @@
 'use strict';
 
-var utils = require(__dirname + '/../../lib/utils');
-var buildStrategy = require(__dirname + '/../../lib/strategyBuilder');
+var utils = require('../../lib/utils');
+var buildStrategy = require('../../lib/strategyBuilder');
 
-module.exports = buildStrategy({
+var userImport = {
+  _version: utils.version,
   password: utils.keep(true),
   username: utils.keep(true),
   email: utils.keep(true),
   firstname: utils.keep(true),
   lastname: utils.keep(true),
   picture: utils.keep(true),
-  _version: utils.version,
-}, 'timestamps');
+};
+
+module.exports = buildStrategy(userImport, 'timestamps');

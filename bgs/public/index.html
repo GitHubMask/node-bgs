@@ -1,1 +1,19 @@
-<p>yolo</p>
+<html>
+  <head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="test.js"></script>
+  </head>
+  <body>
+    <p>yolo</p>
+    <label for='username'>Username : </label><input type='text' name='username'/>
+    <label for='password'>Password : </label><input type='text' name='password'/>
+    <a onClick='logMe()'>log me</a>
+    <hr/>
+    <div id='connected'>NOT CONNECTED</div>
+    <hr/>
+    <a onClick='getUsers()'>get users</a>
+    <div id='user-list'>
+
+    </div>
+  </body>
+</html>

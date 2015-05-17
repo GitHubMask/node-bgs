@@ -30,6 +30,9 @@ var User = module.exports = esobject.create({
   // Basic Import Strategy
   import: require('./user.import'),
 
+  // Basic Export Strategy
+  export: require('./user.export'),
+
 });
 
 // --- Find by Username, must be unique
@@ -49,8 +52,9 @@ User.getByUsername = function(username) {
 User.getFromAuth = function(username, password) {
   return User.getByUsername(username)
     .then(function(result){
-      if (bcrypt.compareSync(password, result.password))
-        return result;
+      if (bcrypt.compareSync(password, result.password)) {
+        return User.get(result._id).call('export');
+      }
       throw new NoUserFoundError('No user found');
     })
   ;
